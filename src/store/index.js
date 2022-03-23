@@ -1,5 +1,6 @@
-import { useState } from "react";
 import { configureStore, createSlice } from "@reduxjs/toolkit";
+
+// import { useState } from "react";
 
 //Usage:
 // import useSelector, useDispatch, sessionActions
@@ -10,30 +11,82 @@ import { configureStore, createSlice } from "@reduxjs/toolkit";
 const initialSessionState = {
   breakLength: 5,
   sessionLength: 25,
-  timeLeft: 25,
-  isRunning: false
-}
+  timeLeft: 1500000, // 1.500.000 ms = 25 Min
+  isBreak: false,
+  isSession: true,
+  isRunning: false,
+  buttonDisable: false,
+};
 
 const sessionSlice = createSlice({
   name: "session",
   initialState: initialSessionState,
   reducers: {
-    increaseBreak(state, action) {
-      state.breakLength++
+    increaseBreak(state) {
+      if (state.breakLength >= 60) {
+        return;
+      }
+      state.breakLength++;
     },
-    increaseSession(state, action) {
-      state.sessionLength++
-    }
-  }
-})
+    decreaseBreak(state) {
+      if (state.breakLength <= 1) {
+        return;
+      }
+      state.breakLength--;
+    },
+    increaseSession(state) {
+      if (state.sessionLength >= 60) {
+        return;
+      }
+      state.sessionLength++;
+      state.timeLeft = state.sessionLength * 60 * 1000;
+    },
+    decreaseSession(state) {
+      if (state.sessionLength <= 1) {
+        return;
+      }
+      state.sessionLength--;
+      state.timeLeft = state.sessionLength * 60 * 1000;
+    },
+    decreaseTimeLeft(state) {
+      state.timeLeft = state.timeLeft - 1000;
+      if (state.timeLeft <= 0) {
+        document.getElementById('beep').play()
+        if (state.isSession) {
+          state.timeLeft = state.breakLength * 60 * 1000;
+          state.isBreak = true;
+          state.isSession = false;
+        } else if (state.isBreak) {
+          state.timeLeft = state.sessionLength * 60 * 1000;
+          state.isSession = true;
+          state.isBreak = false;
+        }
+      }
+    },
+    setTimeLeft(state, actions) {
+      state.timeLeft = actions.payload;
+    },
+    startStopTime(state) {
+      state.isRunning = !state.isRunning;
+      state.buttonDisable = !state.buttonDisable;
+    },
+    reset(state) {
+      state.sessionLength = 25;
+      state.timeLeft = 25 * 60 * 1000;
+      state.breakLength = 5;
+      state.isRunning = false;
+      state.buttonDisable = false;
+    },
+  },
+});
 
 const store = configureStore({
-  reducer: {session: sessionSlice.reducer}
-})
+  reducer: { session: sessionSlice.reducer },
+});
 
-export const sessionActions = sessionSlice.actions
+export const sessionActions = sessionSlice.actions;
 
-export default store
+export default store;
 
 // const Session = React.createContext();
 

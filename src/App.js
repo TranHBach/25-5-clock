@@ -8,13 +8,14 @@ import FunctionalButton from "./components/FunctionalButton";
 function App() {
   return (
     <div className="center">
-      <a href="">Link to my code</a>
+      <a href="https://github.com/TranHBach/25-5-clock.git" style={{color: "white"}}>Link to my code</a>
       <p>25+5 clock</p>
 
       <BreakLength />
       <SessionLength />
       <RemainingTime />
       <FunctionalButton />
+      <audio id="beep" hidden src={require("./audio/FM9B3TC-alarm.mp3")}></audio>
     </div>
   );
 }
