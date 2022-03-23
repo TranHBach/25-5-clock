@@ -49,7 +49,6 @@ const sessionSlice = createSlice({
       state.timeLeft = state.sessionLength * 60 * 1000;
     },
     decreaseTimeLeft(state) {
-      state.timeLeft = state.timeLeft - 1000;
       if (state.timeLeft <= 0) {
         document.getElementById('beep').play()
         if (state.isSession) {
@@ -61,7 +60,9 @@ const sessionSlice = createSlice({
           state.isSession = true;
           state.isBreak = false;
         }
+        return
       }
+      state.timeLeft = state.timeLeft - 1000;
     },
     setTimeLeft(state, actions) {
       state.timeLeft = actions.payload;
@@ -71,10 +72,14 @@ const sessionSlice = createSlice({
       state.buttonDisable = !state.buttonDisable;
     },
     reset(state) {
+      document.getElementById('beep').currentTime = 0
+      document.getElementById('beep').pause()
       state.sessionLength = 25;
       state.timeLeft = 25 * 60 * 1000;
       state.breakLength = 5;
       state.isRunning = false;
+      state.isSession = true;
+      state.isBreak = false
       state.buttonDisable = false;
     },
   },
