@@ -1,23 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import './webfonts/all.css'
+import BreakLength from "./components/BreakLength";
+import SessionLength from "./components/SessionLength";
+import RemainingTime from "./components/RemainingTime";
+import FunctionalButton from "./components/FunctionalButton";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="center">
+      <a href="">Link to my code</a>
+      <p>25+5 clock</p>
+
+      <BreakLength />
+      <SessionLength />
+      <RemainingTime />
+      <FunctionalButton />
     </div>
   );
 }
