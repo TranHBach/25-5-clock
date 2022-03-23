@@ -16,7 +16,7 @@ function RemainingTime() {
     if (isRunning) {
       countdown = setInterval(() => {
         dispatch(sessionActions.decreaseTimeLeft());
-      }, 50);
+      }, 1000);
     }
     return (() => {
         clearInterval(countdown)
